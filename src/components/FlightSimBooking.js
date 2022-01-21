@@ -3,6 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Grid from '@mui/material/Grid'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { teal, amber } from '@mui/material/colors'
 
 import Staff from './Staff'
 import SignIn from './layout/SignIn'
@@ -10,7 +11,16 @@ import SignIn from './layout/SignIn'
 import Appbar from './layout/Appbar'
 import BookingLandingPage from './BookingLandingPage'
 
-const theme = createTheme()
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: teal[500]
+    },
+    secondary: {
+      main: amber[500]
+    }
+  }
+})
 
 export default function FlightSimBooking () {
   const [date, setDate] = useState('')
@@ -19,6 +29,11 @@ export default function FlightSimBooking () {
   const [disable, setDisabled] = useState(false)
   const [isloggedIn, setIsLoggedIn] = useState(false)
   const [whoLoggedIn, setWhologgedIn] = useState('')
+  const [open, setOpen] = React.useState(false)
+  const [isEditModal, setIsEditModal] = React.useState(false)
+
+  const [prevDate, setPrevDate] = useState('')
+  const [prevSlot, setPrevSlot] = useState('10:30AM-11:30AM')
 
   const handleClick = (e) => {
     setDate(e.target.value)
@@ -31,10 +46,28 @@ export default function FlightSimBooking () {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    setitems([...items, { date: date, slot: slot }])
-    setDisabled(true)
+    if (isEditModal) {
+      items.map(item => {
+        if (
+          (prevDate || prevSlot) &&
+          (prevDate === item.date ||
+          prevSlot === item.slot)
+        ) {
+          item.date = date
+          item.slot = slot
+        }
+        return item
+      })
 
-    alert('Successfully booked your appointment')
+      setitems(items)
+      alert('Successfully modified your appointment')
+    } else {
+      // [1,2] -> 1, 2, 3 -> [1,2,3]
+      setitems([...items, { date: date, slot: slot }])
+      setDisabled(true)
+
+      alert('Successfully booked your appointment')
+    }
   }
 
   const handleRemove = (item) => {
@@ -56,6 +89,43 @@ export default function FlightSimBooking () {
 
   }
 
+  const handleEdit = (appnt) => {
+    setOpen(true)
+
+    setDisabled(false)
+    setSlot(appnt.slot)
+    setDate(appnt.date)
+
+    // open
+    // [1,2,]
+
+    // 4
+
+    // [..arr, 4]
+
+    // edit
+    // [1,2,4]
+
+    // p1
+    // 1
+
+    // [..arr, 1]
+    setPrevSlot(appnt.slot)
+    setPrevDate(appnt.date)
+
+    setIsEditModal(true)
+  }
+
+  const handleOpenAppointment = () => {
+    setOpen(true)
+    setIsEditModal(false)
+  }
+  const handleCloseAppointment = () => {
+    setOpen(false)
+    setSlot('10:30AM-11:30AM')
+    setDate('')
+  }
+
   // Authentication clean up here
   useEffect(() => {
     if (!isloggedIn) {
@@ -72,7 +142,7 @@ export default function FlightSimBooking () {
       }
     })
     console.log({ matchDate })
-    if (matchDate) {
+    if (matchDate && !isEditModal) {
       setDisabled(true)
     } else {
       setDisabled(false)
@@ -87,7 +157,7 @@ export default function FlightSimBooking () {
         <SignIn handleLogin={handleLogin} setWhologgedIn={setWhologgedIn} />
       ) : (
         <Appbar handleLogin={handleLogin} handlePageRoute={handlePageRoute}>
-          <Container maxWidth="xl" sx={{ p: 3 }}>
+          <Container maxWidth="xxl" sx={{ px: 'auto', py: 3, mx: 0 }}>
             <section>
               {!whoLoggedIn.includes('staff')
                 // Go to Customer
@@ -105,6 +175,12 @@ export default function FlightSimBooking () {
                       setDate={setDate}
                       items={items}
                       handleRemove={handleRemove}
+                      open={open}
+                      setOpen={setOpen}
+                      handleEdit={handleEdit}
+                      handleOpenAppointment={handleOpenAppointment}
+                      handleCloseAppointment={handleCloseAppointment}
+                      isEditModal={isEditModal}
                   />
                   )
                 // Go to Staff

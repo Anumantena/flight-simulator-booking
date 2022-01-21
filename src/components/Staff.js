@@ -9,9 +9,17 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import { CardActions, CardContent, CardMedia, Container, IconButton, Typography } from '@mui/material'
-import Button from '@mui/material/Button'
+import {
+  CardContent,
+  CardMedia,
+  Container,
+  IconButton,
+  Typography
+} from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
+import ThermostatIcon from '@mui/icons-material/Thermostat'
+import TodayIcon from '@mui/icons-material/Today'
+import WeatherList from './layout/WeatherList'
 
 function Staff (props) {
   const { items = [], handleRemove } = props
@@ -21,7 +29,7 @@ function Staff (props) {
   React.useEffect(() => {
     axios
       .get(
-        'http://api.weatherapi.com/v1/forecast.json?key=bda0fad576df4b9ebb4161109221901&q=23508&days=10&aqi=no&alerts=no'
+        'https://api.weatherapi.com/v1/forecast.json?key=bda0fad576df4b9ebb4161109221901&q=23508&days=10&aqi=no&alerts=no'
       )
       .then((json) => {
         setWeatherDates(json.data?.forecast?.forecastday)
@@ -37,52 +45,78 @@ function Staff (props) {
   }, [])
   return (
     <Grid item xs={12} md={12}>
+      <Box sx={{ mb: 3 }}>
+        <Typography
+          component="h2"
+          variant="h6"
+          color="primary"
+          gutterBottom
+        >
+          Weather forecast:
+        </Typography>
+
+        <Container maxWidth="xl" sx={{ p: 0 }}>
+          <Grid container spacing={4}>
+            {weatherDates.map((card) => (
+              <Grid item key={card} xs={12} sm={6} md={4}>
+                <Card
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    image={card.day.condition.icon}
+                    alt="random"
+                    sx={{
+                      width: '100px',
+                      margin: '0 auto'
+                    }}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="h2"
+                      display="flex"
+                      justifyContent="left"
+                      alignItems="center"
+                    >
+                      <ThermostatIcon />
+                      <span>
+                        : {console.log('card>>', card)}
+                        {card.day.avgtemp_f} °F
+                      </span>
+                    </Typography>
+                    <Typography
+                      display="flex"
+                      justifyContent="left"
+                      mb={1}
+                      alignItems="center"
+                    >
+                      <TodayIcon />
+                      <span>: {card.date} </span>
+                    </Typography>
+                    <Typography
+                      display="flex"
+                      justifyContent="left"
+                      alignItems="center"
+                    >
+                      {card.day.condition.text}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+          {/* <WeatherList /> */}
+        </Container>
+      </Box>
       <Card sx={{ display: 'flex' }}>
         <Box noValidate sx={{ m: 3 }}>
           <Grid container spacing={2}>
-            <Typography
-              component="h2"
-              variant="h6"
-              color="primary"
-              gutterBottom
-              sx={{ ml: 2 }}
-            >
-              Weather forecast:
-            </Typography>
-
-            <Container maxWidth="xl">
-              {/* End hero unit */}
-              <Grid container spacing={4}>
-                {weatherDates.map((card) => (
-                  <Grid item key={card} xs={12} sm={6} md={4}>
-                    <Card
-                      sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                    >
-                      <CardMedia
-                        component="img"
-                        image="https://cdn.weatherapi.com/weather/64x64/day/371.png"
-                        alt="random"
-                        sx={{
-                          width: '100px',
-                          margin: '0 auto'
-                        }}
-                      />
-                      <CardContent sx={{ flexGrow: 1 }}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          Temperature : {console.log(card)}{card.day.avgtemp_f} °F
-                        </Typography>
-                        <Typography>
-                          Date: {card.date}
-                        </Typography>
-                        <Typography>
-                          {card.day.condition.text}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            </Container>
             <Typography
               component="h2"
               variant="h6"
@@ -103,7 +137,12 @@ function Staff (props) {
               <TableBody>
                 {items.map((item, key) => (
                   <TableRow key={key}>
-                    <IconButton color="primary" aria-label="upload picture" component="span" onClick={(e) => handleRemove(item)}>
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                      onClick={(e) => handleRemove(item)}
+                    >
                       <DeleteIcon />
                     </IconButton>
                     <TableCell>{item.date}</TableCell>

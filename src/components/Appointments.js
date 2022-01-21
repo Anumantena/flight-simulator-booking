@@ -9,9 +9,10 @@ import { CardActions, IconButton, Typography } from '@mui/material'
 import EventIcon from '@mui/icons-material/Event'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 
 function Appointments (props) {
-  const { items, handleRemove, date } = props
+  const { items, handleRemove, date, handleEdit } = props
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -51,14 +52,17 @@ function Appointments (props) {
                   <Typography display="flex" justifyContent='left'>
                     <EventIcon />{' '} <span> - {card.date}</span>
                   </Typography>
-                  <Typography display="flex" justifyContent='left' sx={{ mt: 2 }}>
+                  <Typography display="flex" justifyContent='left' sx={{ mt: 2, mb: 1 }}>
                     <AccessTimeIcon />{' '} <span> - {card.slot} </span>
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  {/* TODO: build edit functionality */}
                   <IconButton color="primary" aria-label="upload picture" component="span" onClick={(e) => handleRemove(card)}>
                     <DeleteIcon />
+                  </IconButton>
+
+                  <IconButton color="primary" aria-label="upload picture" component="span" onClick={(e) => handleEdit(card)}>
+                    <EditIcon />
                   </IconButton>
                 </CardActions>
               </Card>
@@ -67,7 +71,6 @@ function Appointments (props) {
         </Grid>
           : 'No Appointments found.'}
       </Box>
-      {/* </CardActionArea> */}
     </Grid>
   )
 }

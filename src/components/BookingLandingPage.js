@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Grid from '@mui/material/Grid'
 import BgImage from './layout/BgImage'
-import BookingAppointment from './BookingAppointment'
+import BookingAppointment from './BookAppointment'
 import Appointments from './Appointments'
 
 const bgProps = {
-  title: 'Flight Simulator Application',
+  title: 'Flight Simulator App',
   description:
         "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
   image:
@@ -15,26 +15,17 @@ const bgProps = {
 }
 
 const BookingLandingPage = (props) => {
-  const { whoLoggedIn, date, slot, disable, setitems, setDisabled, handleClick, handleSlot, handleSubmit, setSlot, setDate, items, handleRemove } = props
+  const { whoLoggedIn, items, handleRemove, date, handleEdit } = props
   return (
         <>
             <BgImage bgProps={bgProps} whoLoggedIn={whoLoggedIn} />
             <Grid container>
                 <Grid item md={12} sx={{ mb: 2 }}>
                     <BookingAppointment
-                        date={date}
-                        slot={slot}
-                        disable={disable}
-                        setitems={setitems}
-                        setDisabled={setDisabled}
-                        handleClick={handleClick}
-                        handleSlot={handleSlot}
-                        handleSubmit={handleSubmit}
-                        setSlot={setSlot}
-                        setDate={setDate}
+                        {...props}
                     />
                 </Grid>
-                <Appointments items={items} handleRemove={handleRemove} date={date} />
+                <Appointments items={items} handleRemove={handleRemove} date={date} handleEdit={handleEdit}/>
             </Grid>
         </>
   )
