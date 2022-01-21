@@ -9,19 +9,19 @@ function Header (props) {
 
   return (
     <React.Fragment>
-      <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
         <Typography
           component="h2"
           variant="h5"
           color="inherit"
-          align="center"
+          align="left"
           noWrap
           sx={{ flex: 1 }}
         >
           {title}
         </Typography>
 
-        <Button variant="outlined" size="small" onClick={handleLogin}>
+        <Button variant="outlined" size="small" onClick={handleLogin} sx={{ color: 'white' }}>
           Logout
         </Button>
       </Toolbar>

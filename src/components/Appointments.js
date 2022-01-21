@@ -48,7 +48,7 @@ function Appointments (props) {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Cancel your booking</TableCell>
+                    <TableCell></TableCell>
                     <TableCell>Date</TableCell>
                     <TableCell>Slot</TableCell>
                   </TableRow>

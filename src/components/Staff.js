@@ -58,6 +58,7 @@ function Staff (props) {
                 <TableBody>
                   {weatherDates.map((item, key) => (
                     <TableRow key={key}>
+                      {console.log(item)}
                       <TableCell>{item.day.avgtemp_f} °F</TableCell>
                       <TableCell>{item.date}</TableCell>
                     </TableRow>

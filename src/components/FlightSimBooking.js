@@ -13,6 +13,8 @@ import Appointments from './Appointments'
 import Staff from './Staff'
 import SignIn from './layout/SignIn'
 
+import Appbar from './layout/Appbar'
+
 const bgProps = {
   title: 'Flight Simulator Application',
   description:
@@ -86,52 +88,48 @@ export default function FlightSimBooking () {
     }
   }, [date])
 
-  console.log({ disable })
+  console.log({ disable, whoLoggedIn, isloggedIn })
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {!isloggedIn ? (
         <SignIn handleLogin={handleLogin} setWhologgedIn={setWhologgedIn} />
       ) : (
-        <Container maxWidth="lg">
-          <Header
-            title="Flight Simulator Application"
-            handleLogin={handleLogin}
-          />
-          <main>
-            {!whoLoggedIn.includes('staff')
-            // Go to Customer
-              ? (
-              <>
-                <BgImage bgProps={bgProps} whoLoggedIn={whoLoggedIn}/>
-                <Grid container spacing={4}>
-                  <BookingAppointment
-                    date={date}
-                    slot={slot}
-                    disable={disable}
-                    setitems={setitems}
-                    setDisabled={setDisabled}
-                    handleClick={handleClick}
-                    handleSlot={handleSlot}
-                    handleSubmit={handleSubmit}
-                  />
-                  <Appointments items={items} handleRemove={handleRemove} date={date}/>
-                </Grid>
-              </>
-                )
-              // Go to Staff
-              : (
-              <Grid container spacing={4}>
-                <Staff items={items} handleRemove={handleRemove}/>
-              </Grid>
-                )}
-          </main>
-        </Container>
+          <Appbar handleLogin={handleLogin}>
+          <Container maxWidth="lg">
+            <main>
+              {!whoLoggedIn.includes('staff')
+                // Go to Customer
+                ? (
+                  <>
+                    <BgImage bgProps={bgProps} whoLoggedIn={whoLoggedIn} />
+                    <Grid container spacing={4}>
+                      <BookingAppointment
+                        date={date}
+                        slot={slot}
+                        disable={disable}
+                        setitems={setitems}
+                        setDisabled={setDisabled}
+                        handleClick={handleClick}
+                        handleSlot={handleSlot}
+                        handleSubmit={handleSubmit}
+                      />
+                      <Appointments items={items} handleRemove={handleRemove} date={date} />
+                    </Grid>
+                  </>)
+                // Go to Staff
+                : (
+                  <Grid container spacing={4}>
+                    <Staff items={items} handleRemove={handleRemove} />
+                  </Grid>)}
+            </main>
+            {/* <Footer
+              title="Footer"
+              description="Something here to give the footer a purpose!"
+            /> */}
+          </Container>
+        </Appbar>
       )}
-      <Footer
-        title="Footer"
-        description="Something here to give the footer a purpose!"
-      />
     </ThemeProvider>
   )
 }
