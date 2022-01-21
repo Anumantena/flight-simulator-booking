@@ -4,13 +4,11 @@ import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import { Typography } from '@mui/material'
-import Button from '@mui/material/Button'
+import { CardActions, IconButton, Typography } from '@mui/material'
+
+import EventIcon from '@mui/icons-material/Event'
+import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 function Appointments (props) {
   const { items, handleRemove, date } = props
@@ -27,53 +25,48 @@ function Appointments (props) {
 
   return (
     <Grid item xs={12} md={6}>
-      <Card sx={{ display: 'flex' }}>
-        <CardContent sx={{ flex: 1 }}>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Typography
-                component="h2"
-                variant="h6"
-                color="primary"
-                gutterBottom
-                sx={{ ml: 2 }}
+      <Box
+        component="form"
+        noValidate
+        onSubmit={handleSubmit}
+      >
+        <Typography
+          component="h6"
+          variant="h6"
+          color="primary"
+          gutterBottom
+          sx={{
+            color: 'black'
+          }}
+        >
+          Appointments booked:
+        </Typography>
+        {items.length > 0 ? <Grid container spacing={2}>
+          {items.map((card) => (
+            <Grid item key={card} xs={4} sm={4} md={4}>
+              <Card
+                sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
               >
-                Appointments booked:
-              </Typography>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Slot</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {items.map((item, key) => (
-                    <TableRow key={key}>
-                      {console.log('item.date, date', item.date, date)}
-                      <Button
-                        onClick={(e) => handleRemove(item)}
-                        variant="text"
-                        disabled={item.date > date}
-                      >
-                        Cancel
-                      </Button>
-                      <TableCell>{item.date}</TableCell>
-                      <TableCell>{item.slot}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                <CardContent sx={{ flexGrow: 1, pb: 0 }}>
+                  <Typography display="flex" justifyContent='left'>
+                    <EventIcon />{' '} <span> - {card.date}</span>
+                  </Typography>
+                  <Typography display="flex" justifyContent='left' sx={{ mt: 2 }}>
+                    <AccessTimeIcon />{' '} <span> - {card.slot} </span>
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  {/* TODO: build edit functionality */}
+                  <IconButton color="primary" aria-label="upload picture" component="span" onClick={(e) => handleRemove(card)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </CardActions>
+              </Card>
             </Grid>
-          </Box>
-        </CardContent>
-      </Card>
+          ))}
+        </Grid>
+          : 'No Appointments found.'}
+      </Box>
       {/* </CardActionArea> */}
     </Grid>
   )

@@ -43,6 +43,12 @@ export default function SignInSide (props) {
             flexDirection: 'column',
             alignItems: 'center'
           }}
+          component="form"
+          onSubmit={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            handleLogin()
+          }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
@@ -78,7 +84,7 @@ export default function SignInSide (props) {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={handleLogin}
+              type="submit"
             >
               Sign In
             </Button>

@@ -4,26 +4,11 @@ import Grid from '@mui/material/Grid'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
-import Header from './layout/Header'
-import BgImage from './layout/BgImage'
-import BookingAppointment from './BookingAppointment'
-
-import Footer from './layout/Footer'
-import Appointments from './Appointments'
 import Staff from './Staff'
 import SignIn from './layout/SignIn'
 
 import Appbar from './layout/Appbar'
-
-const bgProps = {
-  title: 'Flight Simulator Application',
-  description:
-    "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-  image:
-    'https://img-vimbly-com-images.imgix.net/full_photos/0_new-tandem-skydiving-2.jpg?auto=compress&fit=crop&h=490&ixlib=php-1.2.1&w=730',
-  imageText: 'main image description',
-  linkText: 'Continue reading…'
-}
+import BookingLandingPage from './BookingLandingPage'
 
 const theme = createTheme()
 
@@ -65,6 +50,12 @@ export default function FlightSimBooking () {
     setIsLoggedIn(!isloggedIn)
   }
 
+  // Todo:
+  // https://www.miamiskydivingcenter.com/rates-faqs
+  const handlePageRoute = () => {
+
+  }
+
   // Authentication clean up here
   useEffect(() => {
     if (!isloggedIn) {
@@ -95,38 +86,34 @@ export default function FlightSimBooking () {
       {!isloggedIn ? (
         <SignIn handleLogin={handleLogin} setWhologgedIn={setWhologgedIn} />
       ) : (
-          <Appbar handleLogin={handleLogin}>
-          <Container maxWidth="lg">
-            <main>
+        <Appbar handleLogin={handleLogin} handlePageRoute={handlePageRoute}>
+          <Container maxWidth="xl" sx={{ p: 3 }}>
+            <section>
               {!whoLoggedIn.includes('staff')
                 // Go to Customer
                 ? (
-                  <>
-                    <BgImage bgProps={bgProps} whoLoggedIn={whoLoggedIn} />
-                    <Grid container spacing={4}>
-                      <BookingAppointment
-                        date={date}
-                        slot={slot}
-                        disable={disable}
-                        setitems={setitems}
-                        setDisabled={setDisabled}
-                        handleClick={handleClick}
-                        handleSlot={handleSlot}
-                        handleSubmit={handleSubmit}
-                      />
-                      <Appointments items={items} handleRemove={handleRemove} date={date} />
-                    </Grid>
-                  </>)
+                  <BookingLandingPage
+                      whoLoggedIn={whoLoggedIn}
+                      date={date} slot={slot}
+                      disable={disable}
+                      setitems={setitems}
+                      setDisabled={setDisabled}
+                      handleClick={handleClick}
+                      handleSlot={handleSlot}
+                      handleSubmit={handleSubmit}
+                      setSlot={setSlot}
+                      setDate={setDate}
+                      items={items}
+                      handleRemove={handleRemove}
+                  />
+                  )
                 // Go to Staff
                 : (
                   <Grid container spacing={4}>
                     <Staff items={items} handleRemove={handleRemove} />
                   </Grid>)}
-            </main>
-            {/* <Footer
-              title="Footer"
-              description="Something here to give the footer a purpose!"
-            /> */}
+            </section>
+
           </Container>
         </Appbar>
       )}

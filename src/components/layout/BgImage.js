@@ -35,7 +35,7 @@ function BgImage (props) {
         }}
       />
       <Grid container>
-        <Grid item md={8}>
+        <Grid item md={12}>
           <Box
             sx={{
               position: 'relative',

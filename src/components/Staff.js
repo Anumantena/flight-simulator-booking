@@ -9,8 +9,9 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import { Typography } from '@mui/material'
+import { CardActions, CardContent, CardMedia, Container, IconButton, Typography } from '@mui/material'
 import Button from '@mui/material/Button'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 function Staff (props) {
   const { items = [], handleRemove } = props
@@ -35,65 +36,84 @@ function Staff (props) {
       })
   }, [])
   return (
-    <Grid item xs={12} md={6}>
+    <Grid item xs={12} md={12}>
       <Card sx={{ display: 'flex' }}>
-          <Box noValidate sx={{ m: 3 }}>
-            <Grid container spacing={2}>
-              <Typography
-                component="h2"
-                variant="h6"
-                color="primary"
-                gutterBottom
-                sx={{ ml: 2 }}
-              >
-                Weather forecast:
-              </Typography>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Temperature</TableCell>
-                    <TableCell>Date</TableCell>
+        <Box noValidate sx={{ m: 3 }}>
+          <Grid container spacing={2}>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="primary"
+              gutterBottom
+              sx={{ ml: 2 }}
+            >
+              Weather forecast:
+            </Typography>
+
+            <Container maxWidth="xl">
+              {/* End hero unit */}
+              <Grid container spacing={4}>
+                {weatherDates.map((card) => (
+                  <Grid item key={card} xs={12} sm={6} md={4}>
+                    <Card
+                      sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                    >
+                      <CardMedia
+                        component="img"
+                        image="https://cdn.weatherapi.com/weather/64x64/day/371.png"
+                        alt="random"
+                        sx={{
+                          width: '100px',
+                          margin: '0 auto'
+                        }}
+                      />
+                      <CardContent sx={{ flexGrow: 1 }}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          Temperature : {console.log(card)}{card.day.avgtemp_f} °F
+                        </Typography>
+                        <Typography>
+                          Date: {card.date}
+                        </Typography>
+                        <Typography>
+                          {card.day.condition.text}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            </Container>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="primary"
+              gutterBottom
+              sx={{ ml: 2, mt: 5 }}
+            >
+              Appointments Customer booked:
+            </Typography>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Cancel his/her booking</TableCell>
+                  <TableCell>Date</TableCell>
+                  <TableCell>Slot</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {items.map((item, key) => (
+                  <TableRow key={key}>
+                    <IconButton color="primary" aria-label="upload picture" component="span" onClick={(e) => handleRemove(item)}>
+                      <DeleteIcon />
+                    </IconButton>
+                    <TableCell>{item.date}</TableCell>
+                    <TableCell>{item.slot}</TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {weatherDates.map((item, key) => (
-                    <TableRow key={key}>
-                      {console.log(item)}
-                      <TableCell>{item.day.avgtemp_f} °F</TableCell>
-                      <TableCell>{item.date}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <Typography
-                component="h2"
-                variant="h6"
-                color="primary"
-                gutterBottom
-                sx={{ ml: 2, mt: 5 }}
-              >
-                Appointments Customer booked:
-              </Typography>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Cancel his booking</TableCell>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Slot</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {items.map((item, key) => (
-                    <TableRow key={key}>
-                      <Button variant="text" onClick={() => handleRemove(item)}>Cancel</Button>
-                      <TableCell>{item.date}</TableCell>
-                      <TableCell>{item.slot}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Grid>
-          </Box>
+                ))}
+              </TableBody>
+            </Table>
+          </Grid>
+        </Box>
       </Card>
     </Grid>
   )
