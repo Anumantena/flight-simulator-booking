@@ -18,6 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 
 import MailIcon from '@mui/icons-material/Mail'
+import HelpIcon from '@mui/icons-material/Help'
 
 import Header from './Header'
 
@@ -71,26 +72,26 @@ const AppBar = styled(MuiAppBar, {
   })
 }))
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme)
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme)
-    })
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== 'open'
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  ...(open && {
+    ...openedMixin(theme),
+    '& .MuiDrawer-paper': openedMixin(theme)
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    '& .MuiDrawer-paper': closedMixin(theme)
   })
-)
+}))
 
 export default function MiniDrawer (props) {
   const theme = useTheme()
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(true)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -103,7 +104,7 @@ export default function MiniDrawer (props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} color='secondary'>
+      <AppBar position="fixed" open={open} color="secondary">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -117,31 +118,35 @@ export default function MiniDrawer (props) {
           >
             <MenuIcon />
           </IconButton>
-          <Header
-            title="Flight Simulator"
-            handleLogin={props.handleLogin}
-          />
+          <Header title="Flight Simulator" handleLogin={props.handleLogin} />
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === 'rtl' ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
           </IconButton>
         </DrawerHeader>
         <Divider />
         <List>
-          {['Simulator booking', 'FAQs'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon onClick={props.handlePageRoute}>
-                {index % 2 === 0 ? <HomeIcon /> : <MailIcon />}
+          {[
+            { text: 'Simulator booking', comp: <HomeIcon />, id: 'home' },
+            { text: 'FAQs', comp: <HelpIcon />, id: 'faq' }
+          ].map((route, index) => (
+            <ListItem button key={route.text} onClick={() => props.handlePageRoute(route.id)}>
+              <ListItemIcon>
+                {route.comp}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={route.text} />
             </ListItem>
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1}}>
+      <Box component="main" sx={{ flexGrow: 1 }}>
         <DrawerHeader />
         {props.children}
       </Box>

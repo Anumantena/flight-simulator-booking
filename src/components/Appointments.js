@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import { CardActions, IconButton, Typography } from '@mui/material'
+import { CardActionArea, CardActions, IconButton, Typography } from '@mui/material'
 
 import EventIcon from '@mui/icons-material/Event'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
@@ -26,11 +26,7 @@ function Appointments (props) {
 
   return (
     <Grid item xs={12} md={6}>
-      <Box
-        component="form"
-        noValidate
-        onSubmit={handleSubmit}
-      >
+      <Box component="form" noValidate onSubmit={handleSubmit}>
         <Typography
           component="h6"
           variant="h6"
@@ -42,34 +38,64 @@ function Appointments (props) {
         >
           Appointments booked:
         </Typography>
-        {items.length > 0 ? <Grid container spacing={2}>
-          {items.map((card) => (
-            <Grid item key={card} xs={4} sm={4} md={4}>
-              <Card
-                sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-              >
-                <CardContent sx={{ flexGrow: 1, pb: 0 }}>
-                  <Typography display="flex" justifyContent='left'>
-                    <EventIcon />{' '} <span> - {card.date}</span>
-                  </Typography>
-                  <Typography display="flex" justifyContent='left' sx={{ mt: 2, mb: 1 }}>
-                    <AccessTimeIcon />{' '} <span> - {card.slot} </span>
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <IconButton color="primary" aria-label="upload picture" component="span" onClick={(e) => handleRemove(card)}>
-                    <DeleteIcon />
-                  </IconButton>
+        {items.length > 0 ? (
+          <Grid container spacing={2}>
+            {items.map((card) => (
+              <Grid item key={card} xs={4} sm={4} md={4}>
+                <Card
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}
+                >
+                  <CardActionArea sx={{ cursor: 'default' }}>
+                    <CardContent sx={{ flexGrow: 1, pb: 0 }}>
+                      <Typography
+                        display="flex"
+                        justifyContent="left"
+                        alignItems="center"
+                      >
+                        <EventIcon />
+                        <span> - {card.date}</span>
+                      </Typography>
+                      <Typography
+                        display="flex"
+                        justifyContent="left"
+                        alignItems="center"
+                        sx={{ mt: 2, mb: 1 }}
+                      >
+                        <AccessTimeIcon />
+                        <span> - {card.slot} </span>
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions>
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                      onClick={(e) => handleRemove(card)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
 
-                  <IconButton color="primary" aria-label="upload picture" component="span" onClick={(e) => handleEdit(card)}>
-                    <EditIcon />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-          : 'No Appointments found.'}
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                      onClick={(e) => handleEdit(card)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          'No Appointments found.'
+        )}
       </Box>
     </Grid>
   )

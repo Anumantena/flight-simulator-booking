@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import CssBaseline from '@mui/material/CssBaseline'
 import Grid from '@mui/material/Grid'
 import Container from '@mui/material/Container'
+import Divider from '@mui/material/Divider'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { teal, amber } from '@mui/material/colors'
 
@@ -10,6 +11,7 @@ import SignIn from './layout/SignIn'
 
 import Appbar from './layout/Appbar'
 import BookingLandingPage from './BookingLandingPage'
+import FAQs from './layout/FAQs'
 
 const theme = createTheme({
   palette: {
@@ -47,11 +49,10 @@ export default function FlightSimBooking () {
     e.preventDefault()
 
     if (isEditModal) {
-      items.map(item => {
+      items.map((item) => {
         if (
           (prevDate || prevSlot) &&
-          (prevDate === item.date ||
-          prevSlot === item.slot)
+          (prevDate === item.date || prevSlot === item.slot)
         ) {
           item.date = date
           item.slot = slot
@@ -83,11 +84,7 @@ export default function FlightSimBooking () {
     setIsLoggedIn(!isloggedIn)
   }
 
-  // Todo:
-  // https://www.miamiskydivingcenter.com/rates-faqs
-  const handlePageRoute = () => {
-
-  }
+  //
 
   const handleEdit = (appnt) => {
     setOpen(true)
@@ -135,7 +132,7 @@ export default function FlightSimBooking () {
 
   useEffect(() => {
     let matchDate = false
-    items.forEach(item => {
+    items.forEach((item) => {
       console.log('disable', item.date, date)
       if (item.date === date) {
         matchDate = true
@@ -150,6 +147,40 @@ export default function FlightSimBooking () {
   }, [date])
 
   console.log({ disable, whoLoggedIn, isloggedIn })
+
+  const routes = {
+    home: (
+      <BookingLandingPage
+        whoLoggedIn={whoLoggedIn}
+        date={date}
+        slot={slot}
+        disable={disable}
+        setitems={setitems}
+        setDisabled={setDisabled}
+        handleClick={handleClick}
+        handleSlot={handleSlot}
+        handleSubmit={handleSubmit}
+        setSlot={setSlot}
+        setDate={setDate}
+        items={items}
+        handleRemove={handleRemove}
+        open={open}
+        setOpen={setOpen}
+        handleEdit={handleEdit}
+        handleOpenAppointment={handleOpenAppointment}
+        handleCloseAppointment={handleCloseAppointment}
+        isEditModal={isEditModal}
+      />
+    ),
+    faq: <FAQs />
+  }
+
+  const [displayRoute, setDisplayRoute] = useState('home')
+  // Todo:
+  // https://www.miamiskydivingcenter.com/rates-faqs
+  const handlePageRoute = (route) => {
+    setDisplayRoute(route)
+  }
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -157,39 +188,27 @@ export default function FlightSimBooking () {
         <SignIn handleLogin={handleLogin} setWhologgedIn={setWhologgedIn} />
       ) : (
         <Appbar handleLogin={handleLogin} handlePageRoute={handlePageRoute}>
-          <Container maxWidth="xxl" sx={{ px: 'auto', py: 3, mx: 0 }}>
+          <Container
+            maxWidth="xxl"
+            sx={{
+              px: 'auto',
+              py: 3,
+              mx: 0,
+              bgcolor: '#f5f5f5',
+              height: '100%'
+            }}
+          >
             <section>
-              {!whoLoggedIn.includes('staff')
+              {!whoLoggedIn.includes('staff') ? (
                 // Go to Customer
-                ? (
-                  <BookingLandingPage
-                      whoLoggedIn={whoLoggedIn}
-                      date={date} slot={slot}
-                      disable={disable}
-                      setitems={setitems}
-                      setDisabled={setDisabled}
-                      handleClick={handleClick}
-                      handleSlot={handleSlot}
-                      handleSubmit={handleSubmit}
-                      setSlot={setSlot}
-                      setDate={setDate}
-                      items={items}
-                      handleRemove={handleRemove}
-                      open={open}
-                      setOpen={setOpen}
-                      handleEdit={handleEdit}
-                      handleOpenAppointment={handleOpenAppointment}
-                      handleCloseAppointment={handleCloseAppointment}
-                      isEditModal={isEditModal}
-                  />
-                  )
+                routes[displayRoute]
+              ) : (
                 // Go to Staff
-                : (
-                  <Grid container spacing={4}>
-                    <Staff items={items} handleRemove={handleRemove} />
-                  </Grid>)}
+                <Grid container spacing={4}>
+                  <Staff items={items} handleRemove={handleRemove} />
+                </Grid>
+              )}
             </section>
-
           </Container>
         </Appbar>
       )}

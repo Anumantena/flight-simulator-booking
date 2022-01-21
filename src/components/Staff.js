@@ -10,6 +10,7 @@ import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import {
+  CardActionArea,
   CardContent,
   CardMedia,
   Container,
@@ -19,7 +20,6 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete'
 import ThermostatIcon from '@mui/icons-material/Thermostat'
 import TodayIcon from '@mui/icons-material/Today'
-import WeatherList from './layout/WeatherList'
 
 function Staff (props) {
   const { items = [], handleRemove } = props
@@ -46,12 +46,7 @@ function Staff (props) {
   return (
     <Grid item xs={12} md={12}>
       <Box sx={{ mb: 3 }}>
-        <Typography
-          component="h2"
-          variant="h6"
-          color="primary"
-          gutterBottom
-        >
+        <Typography component="h2" variant="h6" color="primary" gutterBottom>
           Weather forecast:
         </Typography>
 
@@ -66,47 +61,49 @@ function Staff (props) {
                     flexDirection: 'column'
                   }}
                 >
-                  <CardMedia
-                    component="img"
-                    image={card.day.condition.icon}
-                    alt="random"
-                    sx={{
-                      width: '100px',
-                      margin: '0 auto'
-                    }}
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      component="h2"
-                      display="flex"
-                      justifyContent="left"
-                      alignItems="center"
-                    >
-                      <ThermostatIcon />
-                      <span>
-                        : {console.log('card>>', card)}
-                        {card.day.avgtemp_f} °F
-                      </span>
-                    </Typography>
-                    <Typography
-                      display="flex"
-                      justifyContent="left"
-                      mb={1}
-                      alignItems="center"
-                    >
-                      <TodayIcon />
-                      <span>: {card.date} </span>
-                    </Typography>
-                    <Typography
-                      display="flex"
-                      justifyContent="left"
-                      alignItems="center"
-                    >
-                      {card.day.condition.text}
-                    </Typography>
-                  </CardContent>
+                  <CardActionArea sx={{ cursor: 'default' }}>
+                    <CardMedia
+                      component="img"
+                      image={card.day.condition.icon}
+                      alt="random"
+                      sx={{
+                        width: '100px',
+                        margin: '0 auto'
+                      }}
+                    />
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography
+                        gutterBottom
+                        variant="h5"
+                        component="h2"
+                        display="flex"
+                        justifyContent="left"
+                        alignItems="center"
+                      >
+                        <ThermostatIcon />
+                        <span>
+                          : {console.log('card>>', card)}
+                          {card.day.avgtemp_f} °F
+                        </span>
+                      </Typography>
+                      <Typography
+                        display="flex"
+                        justifyContent="left"
+                        mb={1}
+                        alignItems="center"
+                      >
+                        <TodayIcon />
+                        <span>: {card.date} </span>
+                      </Typography>
+                      <Typography
+                        display="flex"
+                        justifyContent="left"
+                        alignItems="center"
+                      >
+                        {card.day.condition.text}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
                 </Card>
               </Grid>
             ))}
