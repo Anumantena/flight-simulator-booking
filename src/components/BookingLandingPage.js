@@ -7,7 +7,7 @@ import Appointments from './Appointments'
 const bgProps = {
   title: 'Flight Simulator App',
   description:
-        "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
+        'Sky Diving is fun !! See the beauty of Norfolk from a bird’s eye view as you peacefully fly back to earth with your parachute. If you’ve never jumped before, you’ll be amazed at how easy the training is and how fun our tandem jumps.',
   image:
         'https://img-vimbly-com-images.imgix.net/full_photos/0_new-tandem-skydiving-2.jpg?auto=compress&fit=crop&h=490&ixlib=php-1.2.1&w=730',
   imageText: 'main image description',
